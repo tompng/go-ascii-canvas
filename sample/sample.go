@@ -27,7 +27,6 @@ func main() {
 		terminalWidth, terminalHeight := asciicanvas.GetWinSize()
 		canvas := asciicanvas.NewImageBuffer(terminalWidth, 2*terminalHeight)
 		canvas.RotateDraw(img, 0, 0, 80, 80, -30+60*rand.Float64())
-		canvas.Plot(80, 80, 0, 1)
 		for x := 0; x < canvas.Width; x++ {
 			for y := 0; y < canvas.Height; y++ {
 				canvas.Plot(x, y, float64(x)/float64(canvas.Width), 0.5*float64(y)/float64(canvas.Height))
