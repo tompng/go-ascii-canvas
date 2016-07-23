@@ -83,6 +83,15 @@ canvas.RotateDraw(img, x, y, w, h, angle)
 canvas1.Draw(img, 0, 0, 100, 100)
 canvas2.Draw(canvas1, 0, 0, 40, 40)
 
+// Create from ...
+img, _ := asciicanvas.NewImageBufferFromReader(reader) // io.Reader
+img, _ := asciicanvas.NewImageBufferFromImage(image) // image.Image
+img, _ := asciicanvas.NewImageBufferFromBytes(bytes) // []byte
+
+// Using with go-bindata
+data, _ := Asset("foo/bar.png")
+img, _ := asciicanvas.NewImageBufferFromBytes(data)
+
 // Jpeg image
 import (
 	"github.com/tompng/go-ascii-canvas"

@@ -1,8 +1,10 @@
 package asciicanvas
 
 import (
+	"bytes"
 	"image"
 	_ "image/png"
+	"io"
 	"math"
 	"os"
 	"strings"
@@ -42,15 +44,25 @@ func (image *SubImage) ColorAt(x, y float64) (float64, float64) {
 	return image.Source.ColorAt(image.X+image.W*x, image.Y+image.H*y)
 }
 
+func NewImageBufferFromBytes(b []byte) (*ImageBuffer, error) {
+	return NewImageBufferFromReader(bytes.NewReader(b))
+}
 func NewImageBufferFromFile(fileName string) (*ImageBuffer, error) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
-	img, _, err := image.Decode(file)
+	defer file.Close()
+	return NewImageBufferFromReader(file)
+}
+func NewImageBufferFromReader(reader io.Reader) (*ImageBuffer, error) {
+	img, _, err := image.Decode(reader)
 	if err != nil {
 		return nil, err
 	}
+	return NewImageBufferFromImage(img)
+}
+func NewImageBufferFromImage(img image.Image) (*ImageBuffer, error) {
 	rect := img.Bounds()
 	image := NewImageBuffer(rect.Max.X-rect.Min.X, rect.Max.Y-rect.Min.Y)
 	for x := 0; x < image.Width; x++ {
